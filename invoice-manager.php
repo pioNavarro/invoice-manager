@@ -9,6 +9,12 @@ Version: 1.0
 */
 
 define('plugin_dir_path', plugin_dir_path( __FILE__ ));
+define('plugin_url', plugin_dir_url( __FILE__ ));
+
+/* 
+    enqueue scripts
+*/
+include(plugin_dir_path.'admin/enqueue.php');
 
 add_filter( 'theme_page_templates', 'im_add_page_template_to_dropdown' );
 add_filter('template_include', 'im_change_page_template', 99);
@@ -58,16 +64,16 @@ function im_get_footer() {
 function im_register_invoice() {
 
 	/**
-	 * Post Type: invoices.
+	 * Post Type: invoice_manager.
 	 */
 
 	$labels = [
-		"name" => esc_html__( "invoices", "invoice-manager" ),
+		"name" => esc_html__( "Invoice Manager", "invoice-manager" ),
 		"singular_name" => esc_html__( "invoice", "invoice-manager" ),
-		"menu_name" => esc_html__( "My invoices", "invoice-manager" ),
+		"menu_name" => esc_html__( "Manage invoices", "invoice-manager" ),
 		"all_items" => esc_html__( "All invoices", "invoice-manager" ),
-		"add_new" => esc_html__( "Add new", "invoice-manager" ),
-		"add_new_item" => esc_html__( "Add new invoice", "invoice-manager" ),
+		"add_new" => esc_html__( "New invoice", "invoice-manager" ),
+		"add_new_item" => esc_html__( "Invoice Number", "invoice-manager" ),
 		"edit_item" => esc_html__( "Edit invoice", "invoice-manager" ),
 		"new_item" => esc_html__( "New invoice", "invoice-manager" ),
 		"view_item" => esc_html__( "View invoice", "invoice-manager" ),
@@ -97,7 +103,7 @@ function im_register_invoice() {
 	];
 
 	$args = [
-		"label" => esc_html__( "invoices", "twentytwentytwo" ),
+		"label" => esc_html__( "Manage Invoice", "invoice-manager" ),
 		"labels" => $labels,
 		"description" => "",
 		"public" => true,
@@ -118,11 +124,117 @@ function im_register_invoice() {
 		"can_export" => false,
 		"rewrite" => [ "slug" => "invoice", "with_front" => true ],
 		"query_var" => true,
-		"supports" => [ "title", "editor", "thumbnail" ],
+        "menu_position" => 5,
+        "menu_icon" => "dashicons-store",
+		"supports" => [ "title", "editor", "thumbnail", "custom-fields" ],
 		"show_in_graphql" => false,
 	];
 
-	register_post_type( "invoice", $args );
+	register_post_type( "invoice_manager", $args );    
 }
 
+function im_settings() {
+    include(plugin_dir_path.'admin/settings.php');
+}
+
+function advert_add_to_menu() {
+    add_submenu_page(
+        'edit.php?post_type=invoice_manager', 
+        esc_html__( "Settings", "invoice-manager" ), 
+        esc_html__( "Settings", "invoice-manager" ), 
+        'manage_options', 
+        'im-settings', 
+        'im_settings' 
+    );
+}
+
+add_action('admin_menu', 'advert_add_to_menu');
+
 add_action( 'init', 'im_register_invoice' );
+
+function mi_placeholder_enter_title($title)
+{
+    $screen = get_current_screen();
+    if  ( 'invoice_manager' != $screen->post_type ) {
+        return  $title;
+    }
+   
+     return $title = 'Invoice Number';
+}
+
+// Customize title place holder
+add_filter( 'enter_title_here', 'mi_placeholder_enter_title', 99 );
+
+
+/**
+ * Register meta box(es).
+ */
+
+//related functions structure 
+function add_my_action_boxes($post_type, $post){
+			add_meta_box(
+					'action_box_1',
+					'Invoice Details',
+					'call_back_function_one_to_show_content',
+					'invoice_manager',
+					'normal',
+					'high',
+			);
+}
+
+add_action('add_meta_boxes', 'add_my_action_boxes', 10, 2);
+
+function call_back_function_one_to_show_content($post){
+    $options = array('ongoing','verified','pending');
+    $restaurantName = get_post_meta( $post->ID, '_restaurant_name', true); 
+    $startDate = get_post_meta( $post->ID, '_start_date', true); 
+    $endDate = get_post_meta( $post->ID, '_end_date', true); 
+    $total = get_post_meta( $post->ID, '_total', true); 
+    $status = get_post_meta( $post->ID, '_status', true); 
+    ?>
+    <div class='inside'>
+      <label>Restourant Name: 
+          <input type="text" name="restaurant_name" value="<?php echo $restaurantName; ?>" /> 
+      </label>
+      <label>Start Date: 
+          <input type="text" id="start_date" name="start_date" value="<?php echo $startDate; ?>" /> 
+      </label>
+      <label>End Date: 
+          <input type="text" id="end_date" name="end_date" value="<?php echo $endDate; ?>" /> 
+      </label>
+      <label>Total: 
+          <input type="text" name="total" value="<?php echo $total; ?>" /> 
+      </label>
+      <label>Status: 
+           <select name="status">
+            <?php foreach($options as $option): ?>
+                <option <?php echo ($status==$option)?'selected':'';?> value="<?php echo $option;?>"><?php echo strtoupper($option);?></option>
+            <?php endforeach; ?>
+           </select>
+      </label>
+    </div>
+<?php
+}
+
+function call_back_function_two_to_show_content($post_id,$post, $update){
+    // Only set for post_type = post!
+	if ( 'invoice_manager' !== $post->post_type ) {
+		return;
+	}
+
+    $keys = array('restaurant_name','start_date','end_date','total', 'status');
+
+    foreach($keys as $key):
+        if ( array_key_exists( $key, $_POST ) ) {
+            update_post_meta(
+            $post_id,
+            '_'.$key,
+            $_POST[$key]
+            );
+        }
+    endforeach;
+
+    // print_r($_POST);
+}
+
+add_action( 'save_post', 'call_back_function_two_to_show_content', 99, 3);
