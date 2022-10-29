@@ -134,6 +134,12 @@ function im_register_invoice() {
 }
 
 function im_settings() {
+    $success = false;
+    if($_POST){
+        //Update entire array
+        update_option('im_options', $_POST);
+        $success = true;
+    }
     include(plugin_dir_path.'admin/settings.php');
 }
 
@@ -191,28 +197,10 @@ function call_back_function_one_to_show_content($post){
     $endDate = get_post_meta( $post->ID, '_end_date', true); 
     $total = get_post_meta( $post->ID, '_total', true); 
     $status = get_post_meta( $post->ID, '_status', true); 
+    $fees = get_post_meta( $post->ID, '_fees', true); 
+    $transfer = get_post_meta( $post->ID, '_transfer', true); 
+    include(plugin_dir_path.'admin/custom-fields.php');
     ?>
-    <div class='inside'>
-      <label>Restourant Name: 
-          <input type="text" name="restaurant_name" value="<?php echo $restaurantName; ?>" /> 
-      </label>
-      <label>Start Date: 
-          <input type="text" id="start_date" name="start_date" value="<?php echo $startDate; ?>" /> 
-      </label>
-      <label>End Date: 
-          <input type="text" id="end_date" name="end_date" value="<?php echo $endDate; ?>" /> 
-      </label>
-      <label>Total: 
-          <input type="text" name="total" value="<?php echo $total; ?>" /> 
-      </label>
-      <label>Status: 
-           <select name="status">
-            <?php foreach($options as $option): ?>
-                <option <?php echo ($status==$option)?'selected':'';?> value="<?php echo $option;?>"><?php echo strtoupper($option);?></option>
-            <?php endforeach; ?>
-           </select>
-      </label>
-    </div>
 <?php
 }
 
@@ -222,7 +210,7 @@ function call_back_function_two_to_show_content($post_id,$post, $update){
 		return;
 	}
 
-    $keys = array('restaurant_name','start_date','end_date','total', 'status');
+    $keys = array('restaurant_name','start_date','end_date','total', 'status', 'fees', 'transfer');
 
     foreach($keys as $key):
         if ( array_key_exists( $key, $_POST ) ) {

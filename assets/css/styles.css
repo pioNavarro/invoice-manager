@@ -1,0 +1,16 @@
+.im-form-table>div {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+}
+
+.im-form-table>div span{
+    min-width: 200px;
+    display: inline-block;
+    text-align: right;
+    font-weight: bold;
+}
