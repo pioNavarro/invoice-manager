@@ -16,3 +16,17 @@ function im_enqueue_admin_scripts( $hook ) {
     wp_enqueue_script( 'im-admin-script', plugin_url . 'assets/js/scripts.js', array('jquery', 'jquery-ui-datepicker'), '1.0' );
 }
 add_action( 'admin_enqueue_scripts', 'im_enqueue_admin_scripts' );
+
+function im_enqueue_shortcode_scripts() {
+    /* 
+        Register Scripts 
+    */
+    wp_register_style( 'im-data-table-styles-min', plugin_url . 'assets/datatables/datatables.min.css' , array(), '1.0.0', 'all' );
+    wp_register_style( 'im-data-table-bootstrap-styles-min', plugin_url . 'assets/datatables/Bootstrap-5-5.1.3/css/bootstrap.min.css' , array('im-data-table-styles-min'), '1.0.0', 'all' );
+    wp_register_style( 'im-data-table-styles', plugin_url . 'assets/css/data-table-styles.css' , array(), '1.0.0', 'all' );
+    wp_register_script( 'im-data-table-scripts', plugin_url . 'assets/datatables/datatables.min.js', array('jquery'), '1.0.0', 'all' );
+    wp_register_script( 'im-data-table-scripts-bootstrap', plugin_url . 'assets/datatables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js', array('im-data-table-scripts'), '1.0.0', 'all' );
+    wp_register_script( 'im-table-scripts', plugin_url . 'assets/js/data-table-script.js' , array('im-data-table-scripts'), '1.0.0', 'all' );
+}
+
+add_action( 'wp_enqueue_scripts', 'im_enqueue_shortcode_scripts' );

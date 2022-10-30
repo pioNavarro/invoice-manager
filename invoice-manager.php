@@ -60,6 +60,25 @@ function im_get_footer() {
     include(plugin_dir_path.'templates/template-footer.php');
 }
 
+/* 
+	Invoice Shortcode 
+	Display invoice data table
+*/
+
+function im_datatable($atts) {
+	wp_enqueue_style( 'im-data-table-styles-min' );
+	wp_enqueue_style( 'im-data-table-bootstrap-styles-min' );
+	wp_enqueue_style( 'im-data-table-styles' );
+	wp_enqueue_script( 'im-data-table-scripts' );
+	wp_enqueue_script( 'im-data-table-scripts-bootstrap' );
+	wp_enqueue_script( 'im-table-scripts' );
+    ob_start();
+	include(plugin_dir_path.'shortcode/data-table.php');
+    ?> Here <?php
+    return ob_get_clean();
+}
+
+add_shortcode( 'invoice-table', 'im_datatable');
 
 function im_register_invoice() {
 

@@ -1,8 +1,8 @@
 <?php 
     //Get entire array
     $imOptions = get_option('im_options');
-    $currencyCode = ($imOptions['currency_code']) ? $imOptions['currency_code'] : '';
-    $currentPosition = ($imOptions['current_position']) ? $imOptions['current_position'] : '';
+    $currencyCode = ($imOptions && $imOptions['currency_code']) ? $imOptions['currency_code'] : '';
+    $currentPosition = ($imOptions && $imOptions['current_position']) ? $imOptions['current_position'] : '';
 ?>
 <div class="wrap" >
     <?php if($success):?>
