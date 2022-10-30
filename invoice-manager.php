@@ -205,7 +205,7 @@ function add_my_action_boxes($post_type, $post){
 			add_meta_box(
 					'action_box_1',
 					'Invoice Details',
-					'call_back_function_one_to_show_content',
+					'call_back_function_to_show_content',
 					'invoice_manager',
 					'normal',
 					'high',
@@ -214,7 +214,7 @@ function add_my_action_boxes($post_type, $post){
 
 add_action('add_meta_boxes', 'add_my_action_boxes', 10, 2);
 
-function call_back_function_one_to_show_content($post){
+function call_back_function_to_show_content($post){
     $options = array('ongoing','verified','pending');
     $restaurantName = get_post_meta( $post->ID, '_restaurant_name', true); 
     $startDate = get_post_meta( $post->ID, '_start_date', true); 
@@ -223,6 +223,7 @@ function call_back_function_one_to_show_content($post){
     $status = get_post_meta( $post->ID, '_status', true); 
     $fees = get_post_meta( $post->ID, '_fees', true); 
     $transfer = get_post_meta( $post->ID, '_transfer', true); 
+    $order = get_post_meta( $post->ID, '_order', true); 
     include(plugin_dir_path.'admin/custom-fields.php');
     ?>
 <?php
@@ -234,7 +235,7 @@ function call_back_function_two_to_show_content($post_id,$post, $update){
 		return;
 	}
 
-    $keys = array('restaurant_name','start_date','end_date','total', 'status', 'fees', 'transfer');
+    $keys = array('restaurant_name','start_date','end_date','total', 'status', 'fees', 'transfer', 'order');
 
     foreach($keys as $key):
         if ( array_key_exists( $key, $_POST ) ) {

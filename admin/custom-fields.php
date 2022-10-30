@@ -37,6 +37,12 @@
     </div>
     <div>
         <label>
+            <span>Order: </span>
+            <input type="text" name="order" value="<?php echo $order; ?>" /> 
+        </label>
+    </div>
+    <div>
+        <label>
             <span>Status: </span>
             <select name="status">
             <?php foreach($options as $option): ?>

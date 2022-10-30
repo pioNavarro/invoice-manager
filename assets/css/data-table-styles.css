@@ -3,3 +3,14 @@
     justify-content: flex-end;
     align-items: center;
 }
+
+#im-data-table tbody tr{
+    transition: transform .2s; /* Animation */
+}
+
+#im-data-table tbody tr:hover {
+    position: relative;
+    box-shadow: -2px 5px 9px 0px #00000096;
+    padding: 0 25px;
+    transform: scale(1.02);
+}

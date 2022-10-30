@@ -1,4 +1,3 @@
-Data Tables here
 <div class="container">
 <table id="im-data-table" class="table rounded" style="width:100%">
         <thead>
@@ -17,18 +16,8 @@ Data Tables here
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td>123</td>
-                <td>RESTAURANT</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011-04-25</td>
-                <td>$320,800</td>
-                <td>$320,800</td>
-                <td>$320,800</td>
-                <td>$320,800</td>
-                <td></td>
+            <tr class="odd">
+                <td valign="top" colspan="11" class="dataTables_empty text-center">No matching records found</td>
             </tr>
         </tbody>
         <tfoot>

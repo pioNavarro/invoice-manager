@@ -13,7 +13,20 @@ jQuery(document).ready(function ($) {
             url: imAjax.ajaxurl,
             data : {"action": "im_get_data"},
             type: 'POST',
-        }
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'invoice_id' },
+            { data: 'restaurant_name' },
+            { data: 'status' },
+            { data: 'start_date' },
+            { data: 'end_date' },
+            { data: 'total' },
+            { data: 'fees' },
+            { data: 'transfer' },
+            { data: 'orders' },
+            { data: 'id' },
+        ],
     });
 
     $('#im-btn-actions').html('<button class="btn btn-warning btn-sm">Mark as paid</button>');
