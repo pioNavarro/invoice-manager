@@ -16,6 +16,11 @@ define('plugin_url', plugin_dir_url( __FILE__ ));
 */
 include(plugin_dir_path.'admin/enqueue.php');
 
+/* 
+    ajax request
+*/
+include(plugin_dir_path.'admin/ajax.php');
+
 add_filter( 'theme_page_templates', 'im_add_page_template_to_dropdown' );
 add_filter('template_include', 'im_change_page_template', 99);
 

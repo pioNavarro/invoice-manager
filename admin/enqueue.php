@@ -27,6 +27,7 @@ function im_enqueue_shortcode_scripts() {
     wp_register_script( 'im-data-table-scripts', plugin_url . 'assets/datatables/datatables.min.js', array('jquery'), '1.0.0', 'all' );
     wp_register_script( 'im-data-table-scripts-bootstrap', plugin_url . 'assets/datatables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js', array('im-data-table-scripts'), '1.0.0', 'all' );
     wp_register_script( 'im-table-scripts', plugin_url . 'assets/js/data-table-script.js' , array('im-data-table-scripts'), '1.0.0', 'all' );
+    wp_localize_script( 'im-table-scripts', 'imAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));  
 }
 
 add_action( 'wp_enqueue_scripts', 'im_enqueue_shortcode_scripts' );
