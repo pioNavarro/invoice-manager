@@ -7,3 +7,5 @@ This is a sample invoice manager
 - Add invoices by clicking "New invoice"
 - Add new page and select the "Invoice Manager Template"
 
+# how to use shortcode
+- Simply use this shortcode to Page or Post [invoice-table]
