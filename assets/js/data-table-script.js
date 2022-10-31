@@ -19,6 +19,9 @@ jQuery(document).ready(function ($) {
             data : {"action": "im_get_data"},
             type: 'POST',
         },
+        columnDefs: [
+            { orderable: false, targets: [0,10] }
+        ],
         columns: [
             { 
                 data: 'id',
