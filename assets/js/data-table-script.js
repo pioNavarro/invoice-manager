@@ -1,12 +1,17 @@
 jQuery(document).ready(function ($) {
     console.log('data-table');
     var imDataTable = $('#im-data-table').DataTable({
-        dom: '<"row"<"col-sm-12 col-md-6"<"#im-status">><"col-sm-12 col-md-6 im-left-section"<"#im-filter">f<"#im-btn-actions">>>rt<"row"ip><"clear">',
+        dom: '<"row"<"col-sm-12 col-md-6"<"#im-status">><"col-sm-12 col-md-6 im-left-section"<"#im-filter">f<"#im-btn-actions">>>rt<"#im-footer.row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>><"clear">',
         language: {
             search: "_INPUT_", //To remove Search Label
             searchPlaceholder: "Search",
-            info:"PAGE _PAGE_ OF _PAGES_"
+            info:"PAGE _PAGE_ OF _PAGES_",
+            paginate: {
+                previous: '<',
+                next: '>',
+            }
         },
+        pageLength: 10,
         processing: true,
         serverSide: true,
         ajax: {
@@ -15,17 +20,45 @@ jQuery(document).ready(function ($) {
             type: 'POST',
         },
         columns: [
-            { data: 'id' },
-            { data: 'invoice_id' },
-            { data: 'restaurant_name' },
-            { data: 'status' },
-            { data: 'start_date' },
-            { data: 'end_date' },
-            { data: 'total' },
-            { data: 'fees' },
-            { data: 'transfer' },
-            { data: 'orders' },
-            { data: 'id' },
+            { 
+                data: 'id',
+                render: function ( data, type, row ) {
+                if ( type === 'display' ) {
+                    return '<input type="checkbox" class="editor-active">';
+                }
+                return data;
+                }
+            },
+            { data: 'post_title' },
+            { data: '_restaurant_name' },
+            { 
+                data: '_status', 
+                className: "im-status",
+                render: function ( data, type, row ) {
+                    var color = 'bg-success';
+                    color = (data == 'ongoing')? 'bg-secondary' : color;
+                    color = (data =='pending')? 'bg-warning' : color;
+                    if ( type === 'display' ) {
+                        return '<span class="badge rounded-pill '+color+'">' + data + '</span>';
+                    }
+                    return data;
+                }
+            },
+            { data: '_start_date' },
+            { data: '_end_date' },
+            { data: '_total' },
+            { data: '_fees' },
+            { data: '_transfer' },
+            { data: '_orders' },
+            { 
+                data: 'id',
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {
+                        return '<i class="bi bi-cloud-arrow-down"></i>';
+                    }
+                    return data;
+                }
+            },
         ],
     });
 

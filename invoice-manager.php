@@ -79,7 +79,6 @@ function im_datatable($atts) {
 	wp_enqueue_script( 'im-table-scripts' );
     ob_start();
 	include(plugin_dir_path.'shortcode/data-table.php');
-    ?> Here <?php
     return ob_get_clean();
 }
 
