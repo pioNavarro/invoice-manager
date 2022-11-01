@@ -1,7 +1,8 @@
 jQuery(document).ready(function ($) {
     console.log('data-table');
     var imDataTable = $('#im-data-table').DataTable({
-        dom: '<"row"<"col-sm-12 col-md-6"<"#im-status">><"col-sm-12 col-md-6 im-left-section"<"#im-filter">f<"#im-btn-actions">>>rt<"#im-footer.row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>><"clear">',
+        dom: '<"row"<"col-sm-12 col-md-6"<"#im-status">><"col-sm-12 col-md-6 im-left-section"<"#im-filter">f<"#im-btn-actions">>>r<"#im-table-wrap"t<"#im-footer.row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>><"clear">',
+        responsive: true,
         language: {
             search: "_INPUT_", //To remove Search Label
             searchPlaceholder: "Search",
@@ -22,12 +23,14 @@ jQuery(document).ready(function ($) {
         columnDefs: [
             { orderable: false, targets: [0,10] }
         ],
+        order: [[1, 'asc']],
         columns: [
             { 
                 data: 'id',
+                className: 'text-center',
                 render: function ( data, type, row ) {
                 if ( type === 'display' ) {
-                    return '<input type="checkbox" class="editor-active">';
+                    return '<input type="checkbox" class="form-check-input im-selected">';
                 }
                 return data;
                 }
@@ -42,7 +45,7 @@ jQuery(document).ready(function ($) {
                     color = (data == 'ongoing')? 'bg-secondary' : color;
                     color = (data =='pending')? 'bg-warning' : color;
                     if ( type === 'display' ) {
-                        return '<span class="badge rounded-pill '+color+'">' + data + '</span>';
+                        return '<span class="badge fw-normal text-uppercase rounded-pill '+color+'">' + data + '</span>';
                     }
                     return data;
                 }
@@ -57,7 +60,7 @@ jQuery(document).ready(function ($) {
                 data: 'id',
                 render: function ( data, type, row ) {
                     if ( type === 'display' ) {
-                        return '<i class="bi bi-cloud-arrow-down"></i>';
+                        return '<a href="#" class="im-download" title="download invoice"><i class="bi bi-cloud-arrow-down"></i></a>';
                     }
                     return data;
                 }
@@ -65,8 +68,19 @@ jQuery(document).ready(function ($) {
         ],
     });
 
-    $('#im-btn-actions').html('<button class="btn btn-warning btn-sm">Mark as paid</button>');
-    $('#im-filter').html('Filter dates here');
+    $('#im-toggle').click(function(e){
+        $('.im-selected').prop('checked', this.checked);
+        e.stopPropagation();
+    });
+    $('.im-selected').click(function(e){
+        e.stopPropagation();
+    });
+
+    $('#im-btn-actions').html('<button class="btn btn-warning text-white btn-sm">Mark as paid</button>');
+    $('#im-filter').html('<div class="input-group input-group-sm">'
+        + '<span class="input-group-text im-select-calendar" ><i class="bi bi-calendar4"></i> From</span>'
+        +'<span class="input-group-text bg-white" ><span class="im-ds-input">DD/MM/YYYY</span><i class="bi bi-arrow-right ms-2 me-2"></i><span class="im-de-input">DD/MM/YYYY</span></span>'
+        +'</div>');
     $('#im-status').html('<span class="badge bg-secondary">All</span>'
                         +'<span class="badge text-dark">ONGOING</span>'
                         +'<span class="badge text-dark">VERIFIED</span>'

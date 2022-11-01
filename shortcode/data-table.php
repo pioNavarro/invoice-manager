@@ -2,7 +2,7 @@
 <table id="im-data-table" class="table rounded" style="width:100%">
         <thead>
             <tr>
-                <th><input type="checkbox" name="all" /></th>
+                <th class="text-center"><input type="checkbox" class="form-check-input" id="im-toggle" name="all" /></th>
                 <th>ID</th>
                 <th>RESTAURANT</th>
                 <th>STATUS</th>
@@ -20,7 +20,7 @@
                 <td valign="top" colspan="11" class="dataTables_empty text-center">No matching records found</td>
             </tr>
         </tbody>
-        <tfoot>
+        <!-- <tfoot>
             <tr>
                 <th></th>
                 <th>ID</th>
@@ -34,6 +34,6 @@
                 <th>ORDERS</th>
                 <th></th>
             </tr>
-        </tfoot>
+        </tfoot> -->
     </table>
 </div>

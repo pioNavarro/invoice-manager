@@ -1,14 +1,5 @@
 <?php
 function im_get_data() {
-    /* 
-        $restaurantName = get_post_meta( $post->ID, '_restaurant_name', true); 
-        $startDate = get_post_meta( $post->ID, '_start_date', true); 
-        $endDate = get_post_meta( $post->ID, '_end_date', true); 
-        $total = get_post_meta( $post->ID, '_total', true); 
-        $status = get_post_meta( $post->ID, '_status', true); 
-        $fees = get_post_meta( $post->ID, '_fees', true); 
-        $transfer = get_post_meta( $post->ID, '_transfer', true); 
-    */
 
     $length = $_POST['length'];
     $start = $_POST['start'];
@@ -17,30 +8,42 @@ function im_get_data() {
     $column = $_POST['order'][0]['column'];
     $columnName = $_POST['columns'][$column]['data'];
 
-    $the_query = new WP_Query( array( 
-        'posts_per_page'    => $length, 
-        'post_status'       => 'publish',
-        's'                 => esc_attr( $searchValue ), 
-        'post_type'         => 'invoice_manager',
-        'order'             => $order,
-        'orderby'             =>  $columnName,
-        'offset' => $start
-    ) );
+    $metaQuery = array();
 
-    $the_query->set( 'meta_query', array(
-        'relation' => 'OR',
-        array(
-            'key'     => '_restaurant_name',
+    // $keys = array('_restaurant_name','_status','_start_date','_end_date','_total','_fees','_transfer','_order');
+    $keys = array('_restaurant_name','_status');
+
+    foreach($keys as $key){
+        $metaQuery[] = array(
+            'key'     => $key,
             'value'   => $searchValue ,
             'compare' => 'LIKE'
-            ),
-        array(
-            'key'     => '_status',
-            'value'   => $searchValue,
-            'compare' => 'LIKE'
-        )
-    ) );
+        );
+    }
 
+    $the_query = new WP_Query(array( 
+        '_meta_or_title'    => $searchValue,
+        'posts_per_page'    => $length, 
+        'post_status'       => 'publish',
+        /* 's'                 => esc_attr( $searchValue ),  */
+        'post_type'         => 'invoice_manager',
+        'orderby'             =>   array( $columnName => $order ),
+        'offset' => $start,
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key'     => '_restaurant_name',
+                'value'   => $searchValue ,
+                'compare' => 'LIKE'
+            ),
+            array(
+                'key'     => '_status',
+                'value'   => $searchValue ,
+                'compare' => 'LIKE'
+            )
+        ) 
+    ));
+    wp_reset_postdata(); //clean your query
     $draw = $_POST['draw'];
     $arrayData = array();
     $tableData = array(

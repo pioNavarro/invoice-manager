@@ -250,3 +250,29 @@ function call_back_function_two_to_show_content($post_id,$post, $update){
 }
 
 add_action( 'save_post', 'call_back_function_two_to_show_content', 99, 3);
+
+// modify query for search with meta and post title
+function im_pre_get_posts( $q )
+{
+    if( $title = $q->get( '_meta_or_title' ) )
+    {
+        add_filter( 'get_meta_sql', function( $sql ) use ( $title )
+        {
+            global $wpdb;
+
+            // Only run once:
+            static $nr = 0; 
+            if( 0 != $nr++ ) return $sql;
+
+            // Modify WHERE part:
+            $sql['where'] = sprintf(
+                " AND ( %s OR %s ) ",
+                $wpdb->prepare( "{$wpdb->posts}.post_title = '%s'", $title ),
+                mb_substr( $sql['where'], 5, mb_strlen( $sql['where'] ) )
+            );
+            return $sql;
+        });
+    }
+}
+
+add_action( 'pre_get_posts', 'im_pre_get_posts',99);
