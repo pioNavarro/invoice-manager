@@ -79,7 +79,11 @@ jQuery(document).ready(function ($) {
     $('#im-btn-actions').html('<button class="btn btn-warning text-white btn-sm">Mark as paid</button>');
     $('#im-filter').html('<div class="input-group input-group-sm">'
         + '<span class="input-group-text im-select-calendar" ><i class="bi bi-calendar4"></i> From</span>'
-        +'<span class="input-group-text bg-white" ><span class="im-ds-input">DD/MM/YYYY</span><i class="bi bi-arrow-right ms-2 me-2"></i><span class="im-de-input">DD/MM/YYYY</span></span>'
+        +'<span class="input-group-text bg-white p-0 ps-2 pe-2" >'
+            +'<input id="im-ds-input" class="form-control form-control-sm form-control-plaintext" placeholder="DD/MM/YYYY" />'
+            +'<i class="bi bi-arrow-right ms-2 me-2"></i>'
+            +'<input id="im-de-input" class="form-control form-control-sm form-control-plaintext" placeholder="DD/MM/YYYY" />'
+        +'</span>'
         +'</div>');
     $('#im-status').html('<span class="badge bg-secondary">All</span>'
                         +'<span class="badge text-dark">ONGOING</span>'
