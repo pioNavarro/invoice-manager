@@ -106,7 +106,7 @@ jQuery(document).ready(function ($) {
         $('.im-selected:checked').each(function (element) {
             ids.push($(this).val())
         });
-        console.log('ids', ids);
+        
         if(!ids.length) return false;
         $.ajax({
             method: "POST",
