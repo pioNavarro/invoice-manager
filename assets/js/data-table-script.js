@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
                 className: 'text-center',
                 render: function ( data, type, row ) {
                 if ( type === 'display' ) {
-                    return '<input type="checkbox" value="'+ row.id +'" data-id="'+ row.id +'" class="form-check-input im-selected">';
+                    return '<input type="checkbox" value="'+ row.id +'"  class="form-check-input im-selected">';
                 }
                 return data;
                 }
@@ -102,12 +102,19 @@ jQuery(document).ready(function ($) {
     $('#im-de-input').datepicker({'showAnim': 'slideDown', 'dateFormat': 'dd/mm/yy'});
 
     $('#im-btn-actions .im-mark-paid').click(function() {
-        var ids = $('.im-selected:checked').data('id');
-        
-        $('.im-selected:checked').map(element => {
-            console.log('element',element);
-            console.log('ids',ids);
-            console.log('here',$(element).val());
+        var ids = [];
+        $('.im-selected:checked').each(function (element) {
+            ids.push($(this).val())
         });
+        console.log('ids', ids);
+        if(!ids.length) return false;
+        $.ajax({
+            method: "POST",
+            url: imAjax.ajaxurl,
+            data : {"action": "mark_as_paid","post-ids": ids},
+          })
+            .done(function( msg ) {
+              imDataTable.ajax.reload();
+            });
     });
 });

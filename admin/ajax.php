@@ -95,7 +95,13 @@ function im_get_data() {
 add_action("wp_ajax_im_get_data", "im_get_data");
 
 function mark_as_paid() {
-    print_r($_POST);
+    
+    if(!count($_POST['post-ids'])) die('No Selected data');
+    foreach ($_POST['post-ids'] as $postID) {
+        update_post_meta($postID , '_status', 'verified' );
+    }
+    $json = json_encode(['success' => true, 'update' => count($_POST['post-ids'])]);
+    die($json);
 }
 
 add_action("wp_ajax_mark_as_paid", "mark_as_paid");
