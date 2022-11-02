@@ -21,6 +21,7 @@ function im_enqueue_shortcode_scripts() {
     /* 
         Register Scripts 
     */
+    wp_register_style( 'im-jquery-ui',  'https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css' , array(), '1.0.0', 'all' );
     wp_register_style( 'im-data-table-styles-min', plugin_url . 'assets/datatables/datatables.min.css' , array(), '1.0.0', 'all' );
     wp_register_style( 'im-data-table-bootstrap-styles-min', plugin_url . 'assets/datatables/Bootstrap-5-5.1.3/css/bootstrap.min.css' , array('im-data-table-styles-min'), '1.0.0', 'all' );
     wp_register_style( 'im-data-table-styles', plugin_url . 'assets/css/data-table-styles.css' , array(), '1.0.0', 'all' );

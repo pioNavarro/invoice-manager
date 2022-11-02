@@ -78,7 +78,8 @@ function im_get_data() {
             "_status" => $status,
             "_fees" => $fees,
             "_orders" => $order,
-            "_transfer" => $transfer
+            "_transfer" => $transfer,
+            "image" => get_the_post_thumbnail( $post->ID, array( 32, 32), array( 'class' => 'alignleft' ) )
         ];
     }
 
@@ -92,3 +93,9 @@ function im_get_data() {
 
 /* AJAX request for login users only */
 add_action("wp_ajax_im_get_data", "im_get_data");
+
+function mark_as_paid() {
+    print_r($_POST);
+}
+
+add_action("wp_ajax_mark_as_paid", "mark_as_paid");

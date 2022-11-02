@@ -71,12 +71,14 @@ function im_get_footer() {
 */
 
 function im_datatable($atts) {
+	wp_enqueue_style( 'im-jquery-ui' );
 	wp_enqueue_style( 'im-data-table-styles-min' );
 	wp_enqueue_style( 'im-data-table-bootstrap-styles-min' );
 	wp_enqueue_style( 'im-data-table-styles' );
 	wp_enqueue_script( 'im-data-table-scripts' );
 	wp_enqueue_script( 'im-data-table-scripts-bootstrap' );
 	wp_enqueue_script( 'im-table-scripts' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
     ob_start();
 	include(plugin_dir_path.'shortcode/data-table.php');
     return ob_get_clean();

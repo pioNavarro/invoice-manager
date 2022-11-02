@@ -30,13 +30,21 @@ jQuery(document).ready(function ($) {
                 className: 'text-center',
                 render: function ( data, type, row ) {
                 if ( type === 'display' ) {
-                    return '<input type="checkbox" class="form-check-input im-selected">';
+                    return '<input type="checkbox" value="'+ row.id +'" data-id="'+ row.id +'" class="form-check-input im-selected">';
                 }
                 return data;
                 }
             },
             { data: 'post_title' },
-            { data: '_restaurant_name' },
+            { data: '_restaurant_name',
+                render: function ( data, type, row ) {
+                    var image = row.image + ' ' || '';
+                    if ( type === 'display' ) {
+                        return  image + data ;
+                    }
+                    return data;
+                }
+            },
             { 
                 data: '_status', 
                 className: "im-status",
@@ -76,7 +84,7 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
     });
 
-    $('#im-btn-actions').html('<button class="btn btn-warning text-white btn-sm">Mark as paid</button>');
+    $('#im-btn-actions').html('<button class="btn btn-warning text-white btn-sm im-mark-paid">Mark as paid</button>');
     $('#im-filter').html('<div class="input-group input-group-sm">'
         + '<span class="input-group-text im-select-calendar" ><i class="bi bi-calendar4"></i> From</span>'
         +'<span class="input-group-text bg-white p-0 ps-2 pe-2" >'
@@ -89,4 +97,17 @@ jQuery(document).ready(function ($) {
                         +'<span class="badge text-dark">ONGOING</span>'
                         +'<span class="badge text-dark">VERIFIED</span>'
                         +'<span class="badge text-dark">PENDING</span>');
+
+    $('#im-ds-input').datepicker({'showAnim': 'slideDown', 'dateFormat': 'dd/mm/yy'});
+    $('#im-de-input').datepicker({'showAnim': 'slideDown', 'dateFormat': 'dd/mm/yy'});
+
+    $('#im-btn-actions .im-mark-paid').click(function() {
+        var ids = $('.im-selected:checked').data('id');
+        
+        $('.im-selected:checked').map(element => {
+            console.log('element',element);
+            console.log('ids',ids);
+            console.log('here',$(element).val());
+        });
+    });
 });
