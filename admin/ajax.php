@@ -48,6 +48,7 @@ function im_get_data() {
     $arrayData = array();
     $tableData = array(
         "the_query" => $the_query,
+        "im_options" => get_option('im_options'),
         "draw" => $draw,
         "recordsTotal" => $the_query->found_posts,
         "recordsFiltered" => $the_query->found_posts,

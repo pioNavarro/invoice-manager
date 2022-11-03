@@ -21,7 +21,17 @@ jQuery(document).ready(function ($) {
             type: 'POST',
         },
         columnDefs: [
-            { orderable: false, targets: [0,10] }
+            { orderable: false, targets: [0,10] },
+            { orderable: false, targets: [6,7,8],
+                render: function ( data, type, row, meta ) {
+                    var options =  meta.settings.json.im_options;
+                    var currencyCode = options.currency_code;
+                    data = (options.current_position == 'left' ) ? currencyCode + ' ' + data : data + ' ' + currencyCode;
+                    return data;
+                }
+            },
+            { responsivePriority: 1, targets: [0,1,2,3,6] },
+            { responsivePriority: 2, targets: [4,5] }
         ],
         order: [[1, 'asc']],
         columns: [
